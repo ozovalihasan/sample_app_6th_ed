@@ -1,0 +1,11 @@
+name: sample_app_6th_ed
+packages: 
+- path: app/mailers
+- path: app/models
+- path: app/jobs
+- path: app/controllers
+- path: app/helpers
+- gem: image_processing
+- gem: mini_magick
+- gem: active_storage_validations
+- gem: will_paginate
