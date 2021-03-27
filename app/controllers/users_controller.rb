@@ -13,10 +13,12 @@ class UsersController < ApplicationController
     @microposts = @user.microposts.paginate(page: params[:page])
   end
 
+  # @labels authentication_signup
   def new
     @user = User.new
   end
 
+  # @labels authentication_signup
   def create
     @user = User.new(user_params)
     if @user.save

@@ -1,6 +1,7 @@
 module SessionsHelper
 
   # Logs in the given user.
+  # @labels authentication_login_remember authentication_login_not_remember authentication_signout_with_cookies authentication_action_with_cookies
   def log_in(user)
     session[:user_id] = user.id
     # Guard against session replay attacks.
@@ -9,6 +10,7 @@ module SessionsHelper
   end
 
   # Remembers a user in a persistent session.
+  # @labels authentication_login_remember
   def remember(user)
     user.remember
     cookies.permanent.encrypted[:user_id] = user.id
@@ -16,6 +18,7 @@ module SessionsHelper
   end
 
   # Returns the user corresponding to the remember token cookie.
+  # @labels authentication_signout_with_session authentication_signout_with_cookies authentication_action_with_session authentication_action_with_cookies
   def current_user
     if (user_id = session[:user_id])
       user = User.find_by(id: user_id)
@@ -37,11 +40,13 @@ module SessionsHelper
   end
 
   # Returns true if the user is logged in, false otherwise.
+  # @labels authentication_signout_with_session authentication_signout_with_cookies authentication_action_with_session authentication_action_with_cookies
   def logged_in?
     !current_user.nil?
   end
 
   # Forgets a persistent session.
+  # @labels authentication_login_not_remember
   def forget(user)
     user.forget
     cookies.delete(:user_id)
@@ -49,6 +54,7 @@ module SessionsHelper
   end
 
   # Logs out the current user.
+  # @labels authentication_signout_with_session authentication_signout_with_cookies
   def log_out
     forget(current_user)
     reset_session

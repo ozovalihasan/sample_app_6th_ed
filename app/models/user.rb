@@ -20,6 +20,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
   # Returns the hash digest of the given string.
+  # @labels authentication_login_remember authentication_login_not_remember authentication_signout_with_session authentication_signout_with_cookies authentication_action_with_session authentication_action_with_cookies
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
@@ -27,11 +28,13 @@ class User < ApplicationRecord
   end
 
   # Returns a random token.
+  # @labels authentication_login_remember authentication_login_not_remember authentication_signout_with_session authentication_signout_with_cookies authentication_action_with_session authentication_action_with_cookies
   def User.new_token
     SecureRandom.urlsafe_base64
   end
 
   # Remembers a user in the database for use in persistent sessions.
+  # @labels authentication_login_remember authentication_login_not_remember authentication_signout_with_session authentication_signout_with_cookies authentication_action_with_session authentication_action_with_cookies
   def remember
     self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
@@ -40,11 +43,13 @@ class User < ApplicationRecord
 
   # Returns a session token to prevent session hijacking.
   # We reuse the remember digest for convenience.
+  # @labels authentication_login_remember authentication_login_not_remember authentication_signout_with_session authentication_signout_with_cookies authentication_action_with_session authentication_action_with_cookies
   def session_token
     remember_digest || remember
   end
 
   # Returns true if the given token matches the digest.
+  # @labels authentication_signout_with_cookies authentication_action_with_cookies
   def authenticated?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?
@@ -52,6 +57,7 @@ class User < ApplicationRecord
   end
 
   # Forgets a user.
+  # @labels authentication_login_not_remember authentication_signout_with_session authentication_signout_with_cookies
   def forget
     update_attribute(:remember_digest, nil)
   end
@@ -63,6 +69,7 @@ class User < ApplicationRecord
   end
 
   # Sends activation email.
+  # @labels authentication_signup
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
